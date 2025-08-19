@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday To You!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #ff9a9e, #fad0c4),
+                        url('mod_philuan/images/h1.jpg') no-repeat center center fixed;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            position: relative;
+        }
+        
+        .password-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 100;
+        }
+        
+        .password-container {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        
+        .password-container h2 {
+            margin-bottom: 20px;
+            color: #fff;
+            font-size: 24px;
+        }
+        
+        .password-input {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            width: 250px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            outline: none;
+            text-align: center;
+        }
+        
+        .submit-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            background: #ff6b6b;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background: #ff8e8e;
+            transform: scale(1.05);
+        }
+        
+        .error-message {
+            color: #ff6b6b;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .birthday-content {
+            text-align: center;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            z-index: 10;
+        }
+        
+        h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: colorChange 5s infinite alternate;
+        }
+        
+        .birthday-image {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid white;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+            transition: transform 0.5s;
+            cursor: pointer;
+        }
+        
+        .birthday-image:hover {
+            transform: scale(1.05);
+        }
+        
+        .message {
+            font-size: 20px;
+            max-width: 600px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff6b6b;
+            transform: rotate(45deg);
+            opacity: 0.8;
+            pointer-events: none;
+            animation: fall linear forwards;
+        }
+        
+        .heart:before, .heart:after {
+            content: '';
+            width: 20px;
+            height: 20px;
+            background: #ff6b6b;
+            border-radius: 50%;
+            position: absolute;
+        }
+        
+        .heart:before {
+            top: -10px;
+            left: 0;
+        }
+        
+        .heart:after {
+            top: 0;
+            left: -10px;
+        }
+        
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            z-index: 20;
+        }
+        
+        .music-control i {
+            font-size: 24px;
+            color: white;
+        }
+        
+        .upload-label {
+            margin-top: 10px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(45deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes colorChange {
+            0% { color: #ff6b6b; }
+            25% { color: #ff8e8e; }
+            50% { color: #ffaa8e; }
+            75% { color: #ffc68e; }
+            100% { color: #ffe08e; }
+        }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 36px; }
+            .birthday-image { width: 200px; height: 200px; }
+            .message { font-size: 16px; padding: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Màn hình nhập mật khẩu -->
+    <div class="password-screen" id="passwordScreen">
+        <div class="password-container">
+            <h2>Đố Em Biết Anh Đặt Mã Là Gì</h2>
+            <input type="password" class="password-input" id="passwordInput" placeholder="Nhập Mã Ở Đây...">
+            <button class="submit-btn" onclick="checkPassword()">Xác nhận</button>
+            <p class="error-message" id="errorMessage">Sai Rồi Người Đẹp Kim Anh Ơi!</p>
+        </div>
+    </div>
+    
+    <!-- Nội dung chúc mừng sinh nhật -->
+    <div class="birthday-content" id="birthdayContent">
+        <h1>Happy birthday To You!</h1>
+        <img src="mod_philuan/images/h2.jpg" alt="Ảnh sinh nhật" class="birthday-image" id="birthdayImage">
+        <div class="upload-label">(Kim Anh Sinh Nhật Vui Vẻ!)</div>
+        <div class="message">
+            Chúc Em Có Một Ngày Sinh Nhật Thật Tuyệt Vời, Tràn Ngập Niềm Vui Và Hạnh Phúc. Mong Rằng Tất Cả Những Điều Tốt Đẹp Nhất Sẽ Đến Với Em Trong Ngày Đặc Biệt Này Và Cả Những Ngày Tới!
+        </div>
+        <div class="message">
+            Anh Yêu Em Và Con
+        </div>
+    </div>
+    
+    <!-- Nút điều khiển nhạc -->
+    <div class="music-control" id="musicControl">
+        <i>🔇</i>
+    </div>
+    
+    <!-- Phần tử audio cho nhạc nền -->
+    <audio id="backgroundMusic" loop>
+        <source src="mod_philuan/music/SinhNhatEm-ChiThien-3058475 (mp3cut.net).mp3" type="audio/mpeg">
+        Trình duyệt của bạn không hỗ trợ phần tử audio.
+    </audio>
+    
+    <script>
+        // Mật khẩu để truy cập (có thể thay đổi)
+        const correctPassword = "24042001";
+        const passwordScreen = document.getElementById('passwordScreen');
+        const birthdayContent = document.getElementById('birthdayContent');
+        const passwordInput = document.getElementById('passwordInput');
+        const errorMessage = document.getElementById('errorMessage');
+        const musicControl = document.getElementById('musicControl');
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        const birthdayImage = document.getElementById('birthdayImage');
+        let musicPlaying = false;
+        
+        // Kiểm tra mật khẩu
+        function checkPassword() {
+            if (passwordInput.value === correctPassword) {
+                passwordScreen.style.display = 'none';
+                birthdayContent.style.display = 'flex';
+                startHearts();
+                
+                // Tự động phát nhạc khi mật khẩu đúng
+                backgroundMusic.play()
+                    .then(() => {
+                        musicPlaying = true;
+                        musicControl.innerHTML = '<i>🔊</i>';
+                    })
+                    .catch(error => {
+                        console.log("Tự động phát nhạc bị chặn: ", error);
+                        musicControl.innerHTML = '<i>🔇</i>';
+                    });
+            } else {
+                errorMessage.style.display = 'block';
+                passwordInput.value = '';
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 2000);
+            }
+        }
+        
+        // Cho phép nhấn Enter để xác nhận mật khẩu
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+        
+        // Tạo hiệu ứng trái tim rơi
+        function startHearts() {
+            setInterval(() => {
+                createHeart();
+            }, 300);
+        }
+        
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            
+            // Kích thước ngẫu nhiên
+            const size = Math.random() * 20 + 10;
+            heart.style.width = `${size}px`;
+            heart.style.height = `${size}px`;
+            
+            // Vị trí ngẫu nhiên
+            heart.style.left = Math.random() * window.innerWidth + 'px';
+            heart.style.top = '-50px';
+            
+            // Tốc độ rơi ngẫu nhiên
+            const duration = Math.random() * 5 + 5;
+            heart.style.animationDuration = `${duration}s`;
+            
+            // Màu sắc ngẫu nhiên
+            const colors = ['#ff6b6b', '#ff8e8e', '#ffaa8e', '#ffc68e', '#ffe08e'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            heart.style.background = randomColor;
+            heart.style.setProperty('--heart-color', randomColor);
+            
+            document.body.appendChild(heart);
+            
+            // Xóa trái tim sau khi rơi xong
+            setTimeout(() => {
+                heart.remove();
+            }, duration * 1000);
+        }
+        
+        // Điều khiển nhạc nền
+        musicControl.addEventListener('click', function() {
+            if (musicPlaying) {
+                backgroundMusic.pause();
+                musicControl.innerHTML = '<i>🔇</i>';
+            } else {
+                backgroundMusic.play()
+                    .then(() => {
+                        musicControl.innerHTML = '<i>🔊</i>';
+                    })
+                    .catch(error => {
+                        console.log("Lỗi khi phát nhạc: ", error);
+                    });
+            }
+            musicPlaying = !musicPlaying;
+        });
+        
+        // Cho phép người dùng tải lên hình ảnh
+        birthdayImage.addEventListener('click', function() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        birthdayImage.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            };
+            input.click();
+        });
+    </script>
+</body>
+</html>
