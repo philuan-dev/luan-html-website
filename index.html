@@ -362,10 +362,72 @@
 
         // Start creating hearts when page loads
         window.addEventListener('load', createFallingHearts);
+            <footer class="bg-pink-800 text-white text-center py-4">
+        <div class="flex flex-col items-center">
+            <p class="mb-2">Được Tạo Bởi Anh Dành Cho Em <i class="fas fa-heart text-red-400"></i> Tình Yêu Của Anh</p>
+            <audio id="loveSong" loop>
+                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+                Trình duyệt của bạn không hỗ trợ phần tử audio.
+            </audio>
+            <button id="musicToggle" class="text-3xl text-red-500 hover:text-red-600 transition-colors duration-300 mt-2">
+                <i class="fas fa-volume-mute" id="musicIcon"></i>
+            </button>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const finalMessage = document.getElementById('finalMessage');
+            const showBtn = document.getElementById('showFinalMessage');
+            const closeBtn = document.getElementById('closeFinalMessage');
+            const musicToggle = document.getElementById('musicToggle');
+            const loveSong = document.getElementById('loveSong');
+            const musicIcon = document.getElementById('musicIcon');
+            
+            // Xử lý hiển thị thông điệp cuối
+            showBtn.addEventListener('click', function() {
+                finalMessage.classList.remove('hidden');
+            });
+            
+            // Xử lý đóng thông điệp cuối
+            closeBtn.addEventListener('click', function() {
+                finalMessage.classList.add('hidden');
+            });
+            
+            // Xử lý nút nhạc
+            let isPlaying = false;
+            
+            musicToggle.addEventListener('click', function() {
+                if (isPlaying) {
+                    loveSong.pause();
+                    musicIcon.classList.remove('fa-volume-up');
+                    musicIcon.classList.add('fa-volume-mute');
+                } else {
+                    loveSong.play();
+                    musicIcon.classList.remove('fa-volume-mute');
+                    musicIcon.classList.add('fa-volume-up');
+                }
+                isPlaying = !isPlaying;
+            });
+            
+            // Tự động bật nhạc khi trang được tải (yêu cầu tương tác người dùng)
+            document.body.addEventListener('click', function() {
+                if (!isPlaying) {
+                    loveSong.play().then(() => {
+                        isPlaying = true;
+                        musicIcon.classList.remove('fa-volume-mute');
+                        musicIcon.classList.add('fa-volume-up');
+                    }).catch(error => {
+                        console.log('Autoplay prevented: ', error);
+                    });
+                }
+            }, { once: true });
+        });
     </script>
 </body>
 
 </html>
+
 
 
 
