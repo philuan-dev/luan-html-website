@@ -1,367 +1,386 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday To You!</title>
+    <title>For My Love</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
         }
-        
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(to bottom, #ff9a9e, #fad0c4),
-                        url('mod_philuan/images/h1.jpg') no-repeat center center fixed;
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
-            position: relative;
+        .floating {
+            animation: float 1s ease-in-out infinite;
         }
-        
-        .password-screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            z-index: 100;
+        .heart-beat {
+            animation: heartbeat 1.5s ease-in-out infinite;
         }
-        
-        .password-container {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
-        
-        .password-container h2 {
-            margin-bottom: 20px;
-            color: #fff;
-            font-size: 24px;
-        }
-        
-        .password-input {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 25px;
-            width: 250px;
-            font-size: 16px;
-            margin-bottom: 15px;
-            outline: none;
-            text-align: center;
-        }
-        
-        .submit-btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 25px;
-            background: #ff6b6b;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .submit-btn:hover {
-            background: #ff8e8e;
-            transform: scale(1.05);
-        }
-        
-        .error-message {
-            color: #ff6b6b;
-            margin-top: 10px;
-            display: none;
-        }
-        
-        .birthday-content {
-            text-align: center;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            z-index: 10;
-        }
-        
-        h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            animation: colorChange 5s infinite alternate;
-        }
-        
-        .birthday-image {
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 5px solid white;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            margin-bottom: 30px;
-            transition: transform 0.5s;
-            cursor: pointer;
-        }
-        
-        .birthday-image:hover {
-            transform: scale(1.05);
-        }
-        
         .message {
-            font-size: 20px;
-            max-width: 600px;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            background: rgba(255, 255, 255, 0.2);
-            padding: 20px;
-            border-radius: 15px;
-            backdrop-filter: blur(5px);
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.18);
+            box-shadow: 0 8px 32px 0 rgba(31,38,135,0.37);
         }
-        
-        .heart {
+        .photo-frame {
+            border: 15px solid #fff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transform: rotate(-5deg);
+            transition: all 0.3s ease;
+        }
+        .photo-frame:hover {
+            transform: rotate(0deg) scale(1.05);
+        }
+        .heart-fall {
             position: absolute;
-            width: 20px;
-            height: 20px;
-            background: #ff6b6b;
-            transform: rotate(45deg);
-            opacity: 0.8;
-            pointer-events: none;
-            animation: fall linear forwards;
-        }
-        
-        .heart:before, .heart:after {
-            content: '';
-            width: 20px;
-            height: 20px;
-            background: #ff6b6b;
-            border-radius: 50%;
-            position: absolute;
-        }
-        
-        .heart:before {
-            top: -10px;
-            left: 0;
-        }
-        
-        .heart:after {
-            top: 0;
-            left: -10px;
-        }
-        
-        .music-control {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.2);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            backdrop-filter: blur(5px);
-            z-index: 20;
-        }
-        
-        .music-control i {
+            color: rgba(255, 105, 180, 0.7);
             font-size: 24px;
-            color: white;
+            animation: fall linear infinite;
+            z-index: 0;
         }
-        
-        .upload-label {
-            margin-top: 10px;
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.8);
-        }
-        
         @keyframes fall {
-            to {
-                transform: translateY(100vh) rotate(45deg);
+            0% {
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh) rotate(360deg);
                 opacity: 0;
             }
         }
-        
-        @keyframes colorChange {
-            0% { color: #ff6b6b; }
-            25% { color: #ff8e8e; }
-            50% { color: #ffaa8e; }
-            75% { color: #ffc68e; }
-            100% { color: #ffe08e; }
-        }
-        
-        @media (max-width: 768px) {
-            h1 { font-size: 36px; }
-            .birthday-image { width: 200px; height: 200px; }
-            .message { font-size: 16px; padding: 15px; }
+        .heart-float {
+            position: absolute;
+            color: rgba(255, 105, 180, 0.7);
+            font-size: 24px;
+            animation: float 3s ease-in-out infinite;
+            z-index: 0;
         }
     </style>
 </head>
-<body>
-    <!-- Màn hình nhập mật khẩu -->
-    <div class="password-screen" id="passwordScreen">
-        <div class="password-container">
-            <h2>Đố Em Biết Anh Đặt Mã Là Gì</h2>
-            <input type="password" class="password-input" id="passwordInput" placeholder="Nhập Mã Ở Đây...">
-            <button class="submit-btn" onclick="checkPassword()">Xác nhận</button>
-            <p class="error-message" id="errorMessage">Sai Rồi Người Đẹp Kim Anh Ơi!</p>
+<body class="bg-gradient-to-br from-pink-100 to-red-100 min-h-screen font-sans overflow-x-hidden">
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div class="absolute top-10 left-1/4 w-8 h-8 bg-red-300 rounded-full opacity-70 floating" style="animation-delay: 0s;"></div>
+        <div class="absolute top-1/3 left-3/4 w-12 h-12 bg-pink-300 rounded-full opacity-70 floating" style="animation-delay: 0.5s;"></div>
+        <div class="absolute top-2/3 left-1/5 w-10 h-10 bg-red-400 rounded-full opacity-70 floating" style="animation-delay: 1s;"></div>
+        <div class="absolute top-3/4 left-2/3 w-6 h-6 bg-pink-400 rounded-full opacity-70 floating" style="animation-delay: 1.5s;"></div>
+        
+        <!-- Floating hearts -->
+        <i class="fas fa-heart heart-float" style="top: 15%; left: 20%; animation-delay: 0.2s;"></i>
+        <i class="fas fa-heart heart-float" style="top: 40%; left: 80%; animation-delay: 0.7s;"></i>
+        <i class="fas fa-heart heart-float" style="top: 70%; left: 15%; animation-delay: 1.2s;"></i>
+        <i class="fas fa-heart heart-float" style="top: 85%; left: 70%; animation-delay: 1.7s;"></i>
+        <i class="fas fa-heart heart-float" style="top: 85%; left: 70%; animation-delay: 2.2s;"></i>
+        <i class="fas fa-heart heart-float" style="top: 85%; left: 70%; animation-delay: 2.7s;"></i>
+    </div>
+
+    <div class="container mx-auto px-4 py-12 flex flex-col items-center justify-center min-h-screen">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-red-600 mb-4">
+                CHÚC EM MỘT NGÀY NĂNG LƯỢNG
+            </h1>
+            <p class="text-xl text-pink-700">Gửi Đến Người Đặc Biệt Nhất Trong Cuộc Đời Tôi</p>
+        </div>
+
+    <div class="flex flex-col md:flex-row items-center justify-center gap-8 w-full max-w-6xl">
+            <div class="w-full md:w-1/2 flex justify-center">
+                    <img id="couplePhoto" src="mod_philuan/images/hinh4.jpg" 
+                         alt="" class="w-full max-w-md h-auto object-cover">
+                </div>
+            </div>
+
+            <div class="w-full md:w-1/2">
+                <div class="message p-8 bg-white/30 rounded-2xl">
+                    <h2 class="text-2xl font-bold text-pink-800 mb-4">Tình Yêu Của Tôi Ơi,</h2>
+                    <p class="text-gray-700 mb-4">
+                        Vào ngày đặc biệt này, anh muốn dành chút thời gian để nói với em rằng em có ý 
+                        nghĩa như thế nào đối với anh. Em là ánh sáng của đời anh, 
+                        E là nhịp đập trái tim anh, và là lý do anh phấn đấu mỗi ngày.
+                    </p>
+                    <p class="text-gray-700 mb-4">
+                        Mỗi khoảnh khắc bên em là một báu vật anh trân quý. Tình yêu của em đã tô điểm cuộc 
+                        sống anh bằng những sắc màu mà anh chưa từng biết đến.  Cảm ơn em vì đã là chính 
+                        mình, vì đã yêu anh, và vì đã làm cho thế giới của anh tươi đẹp đến vậy.
+                    </p>
+                    <p class="text-gray-700 mb-6">
+                        Anh hứa sẽ trân trọng em, sẽ luôn bên cạnh em và yêu em nhiều hơn mỗi ngày. 
+                        Em là tất cả của anh.
+                    </p>
+                    <div class="flex justify-center">
+                        <button id="heartBtn" class="heart-beat bg-gradient-to-r from-pink-500 to-red-500 text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center">
+                            <i class="fas fa-heart mr-2"></i> Bấm Vào Đây Để Có Điều Bất Ngờ Hơn
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+            <div class="bg-white/30 p-4 rounded-xl text-center hover:scale-105 transition-transform">
+                <i class="fas fa-heart text-red-500 text-3xl mb-2"></i>
+                <p class="font-medium text-pink-700">Mãi Một Tình Yêu</p>
+            </div>
+            <div class="bg-white/30 p-4 rounded-xl text-center hover:scale-105 transition-transform">
+                <i class="fas fa-kiss-wink-heart text-pink-500 text-3xl mb-2"></i>
+                <p class="font-medium text-pink-700">Nụ Hôn Dành Cho Em</p>
+            </div>
+            <div class="bg-white/30 p-4 rounded-xl text-center hover:scale-105 transition-transform">
+                <i class="fas fa-hands-holding-heart text-red-400 text-3xl mb-2"></i>
+                <p class="font-medium text-pink-700">Phi Lĩnh</p>
+            </div>
+            <div class="bg-white/30 p-4 rounded-xl text-center hover:scale-105 transition-transform">
+                <i class="fas fa-infinity text-pink-600 text-3xl mb-2"></i>
+                <p class="font-medium text-pink-700">Mãi Mãi Là Kim Anh</p>
+            </div>
+        </div>
+
+        <div id="surpriseModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white p-8 rounded-xl max-w-md mx-4 relative">
+                <button id="closeModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="text-center">
+                    <i class="fas fa-heart text-red-500 text-6xl mb-4 heart-beat"></i>
+                    <h3 class="text-2xl font-bold text-pink-700 mb-4">Kim Anh Người Đẹp Của Anh!</h3>
+                    <p class="text-gray-700 mb-6">
+                        Không lời nào có thể diễn tả hết được ý nghĩa của 
+                        em đối với anh. Em là hôm nay và cả tương lai của anh.
+                        Đúng Chứ Người Đẹp Kim Anh?
+                    </p>
+                    <div class="flex justify-center space-x-4">
+                        <button id="yesBtn" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-full transition-all">
+                            Đúng! <i class="fas fa-heart ml-1"></i>
+                        </button>
+                        <button id="noBtn" class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-6 py-2 rounded-full transition-all">
+                            Không
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="finalMessage" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-gradient-to-br from-pink-100 to-red-100 p-8 rounded-xl max-w-md mx-4 text-center">
+                <i class="fas fa-heart text-red-500 text-6xl mb-4 heart-beat"></i>
+                <h3 class="text-2xl font-bold text-pink-700 mb-4">Thật Là Hạnh Phúc!</h3>
+                <p class="text-gray-700 mb-6">
+                    Anh hứa sẽ làm cho mỗi ngày đều lãng mạng như hôm nay. 
+                    Chúng ta hãy cùng nhau cố gắng nha em.
+                </p>
+                <button id="closeFinal" class="bg-pink-500 hover:bg-pink-600 text-white px-6 py-2 rounded-full transition-all">
+                    Nào Rảnh Làm Cho Tiếp <i class="fas fa-smile-wink ml-1"></i>
+                </button>
+            </div>
         </div>
     </div>
-    
-    <!-- Nội dung chúc mừng sinh nhật -->
-    <div class="birthday-content" id="birthdayContent">
-        <h1>Happy birthday To You!</h1>
-        <img src="h2.jpg" alt="Ảnh sinh nhật" class="birthday-image" id="birthdayImage">
-        <div class="upload-label">(Kim Anh Sinh Nhật Vui Vẻ!)</div>
-        <div class="message">
-            Chúc Em Có Một Ngày Sinh Nhật Thật Tuyệt Vời, Tràn Ngập Niềm Vui Và Hạnh Phúc. Mong Rằng Tất Cả Những Điều Tốt Đẹp Nhất Sẽ Đến Với Em Trong Ngày Đặc Biệt Này Và Cả Những Ngày Tới!
+
+    <footer class="bg-pink-800 text-white text-center py-4">
+        <div class="flex flex-col items-center">
+            <p class="mb-2">Được Tạo Ra Dành Cho Mỗi Mình Em <i class="fas fa-heart text-red-400"></i> Tình Yêu Của Anh</p>
+            <audio id="loveSong" autoplay loop class="hidden">
+                <source src="mod_philuan/music/nhac01.mp3"type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <div class="flex flex-col items-center">
+                <button id="musicToggle" class="text-3xl text-red-500 hover:text-red-600 transition-colors">
+                    <i class="fas fa-heart"></i>
+                </button>
+                <p class="text-sm mt-1">Nhấp vào trái tim để dừng nhạc nếu không muốn nghe nha cục vàng của anh</p>
+            </div>
         </div>
-        <div class="message">
-            Anh Yêu Em Và Con
-        </div>
-    </div>
-    
-    <!-- Nút điều khiển nhạc -->
-    <div class="music-control" id="musicControl">
-        <i>🔇</i>
-    </div>
-    
-    <!-- Phần tử audio cho nhạc nền -->
-    <audio id="backgroundMusic" loop>
-        <source src="SinhNhat.mp3" type="audio/mpeg">
-        Trình duyệt của bạn không hỗ trợ phần tử audio.
-    </audio>
-    
+    </footer>
+
     <script>
-        // Mật khẩu để truy cập (có thể thay đổi)
-        const correctPassword = "24042001";
-        const passwordScreen = document.getElementById('passwordScreen');
-        const birthdayContent = document.getElementById('birthdayContent');
-        const passwordInput = document.getElementById('passwordInput');
-        const errorMessage = document.getElementById('errorMessage');
-        const musicControl = document.getElementById('musicControl');
-        const backgroundMusic = document.getElementById('backgroundMusic');
-        const birthdayImage = document.getElementById('birthdayImage');
-        let musicPlaying = false;
-        
-        // Kiểm tra mật khẩu
-        function checkPassword() {
-            if (passwordInput.value === correctPassword) {
-                passwordScreen.style.display = 'none';
-                birthdayContent.style.display = 'flex';
-                startHearts();
-                
-                // Tự động phát nhạc khi mật khẩu đúng
-                backgroundMusic.play()
-                    .then(() => {
-                        musicPlaying = true;
-                        musicControl.innerHTML = '<i>🔊</i>';
-                    })
-                    .catch(error => {
-                        console.log("Tự động phát nhạc bị chặn: ", error);
-                        musicControl.innerHTML = '<i>🔇</i>';
-                    });
-            } else {
-                errorMessage.style.display = 'block';
-                passwordInput.value = '';
-                setTimeout(() => {
-                    errorMessage.style.display = 'none';
-                }, 2000);
+        document.addEventListener('DOMContentLoaded', function() {
+            // Try to play music automatically (may require user interaction on some browsers)
+            const audio = document.getElementById('loveSong');
+            const musicToggle = document.getElementById('musicToggle');
+            
+            // Try to play music automatically (may require user interaction on some browsers)
+            const playPromise = audio.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    // Auto-play was prevented
+                    musicToggle.innerHTML = '<i class="fas fa-heart"></i>';
+                });
             }
-        }
-        
-        // Cho phép nhấn Enter để xác nhận mật khẩu
-        passwordInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                checkPassword();
-            }
-        });
-        
-        // Tạo hiệu ứng trái tim rơi
-        function startHearts() {
-            setInterval(() => {
-                createHeart();
-            }, 300);
-        }
-        
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
             
-            // Kích thước ngẫu nhiên
-            const size = Math.random() * 20 + 10;
-            heart.style.width = `${size}px`;
-            heart.style.height = `${size}px`;
-            
-            // Vị trí ngẫu nhiên
-            heart.style.left = Math.random() * window.innerWidth + 'px';
-            heart.style.top = '-50px';
-            
-            // Tốc độ rơi ngẫu nhiên
-            const duration = Math.random() * 5 + 5;
-            heart.style.animationDuration = `${duration}s`;
-            
-            // Màu sắc ngẫu nhiên
-            const colors = ['#ff6b6b', '#ff8e8e', '#ffaa8e', '#ffc68e', '#ffe08e'];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            heart.style.background = randomColor;
-            heart.style.setProperty('--heart-color', randomColor);
-            
-            document.body.appendChild(heart);
-            
-            // Xóa trái tim sau khi rơi xong
-            setTimeout(() => {
-                heart.remove();
-            }, duration * 1000);
-        }
-        
-        // Điều khiển nhạc nền
-        musicControl.addEventListener('click', function() {
-            if (musicPlaying) {
-                backgroundMusic.pause();
-                musicControl.innerHTML = '<i>🔇</i>';
-            } else {
-                backgroundMusic.play()
-                    .then(() => {
-                        musicControl.innerHTML = '<i>🔊</i>';
-                    })
-                    .catch(error => {
-                        console.log("Lỗi khi phát nhạc: ", error);
-                    });
-            }
-            musicPlaying = !musicPlaying;
-        });
-        
-        // Cho phép người dùng tải lên hình ảnh
-        birthdayImage.addEventListener('click', function() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*';
-            input.onchange = function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        birthdayImage.src = event.target.result;
-                    };
-                    reader.readAsDataURL(file);
+            // Toggle play/pause on button click
+            musicToggle.addEventListener('click', function() {
+                if (audio.paused) {
+                    audio.play();
+                    musicToggle.innerHTML = '<i class="fas fa-heart"></i>';
+                } else {
+                    audio.pause();
+                    musicToggle.innerHTML = '<i class="fas fa-heart"></i>';
                 }
-            };
-            input.click();
+            });
+            
+            // Change heart color when playing
+            audio.addEventListener('play', function() {
+                musicToggle.innerHTML = '<i class="fas fa-heart text-red-500 animate-pulse"></i>';
+            });
+            
+            audio.addEventListener('pause', function() {
+                musicToggle.innerHTML = '<i class="fas fa-heart text-red-500"></i>';
+            });
+            const heartBtn = document.getElementById('heartBtn');
+            const surpriseModal = document.getElementById('surpriseModal');
+            const closeModal = document.getElementById('closeModal');
+            const yesBtn = document.getElementById('yesBtn');
+            const noBtn = document.getElementById('noBtn');
+            const finalMessage = document.getElementById('finalMessage');
+            const closeFinal = document.getElementById('closeFinal');
+            const couplePhoto = document.getElementById('couplePhoto');
+
+            // Rotate through 6 images automatically
+            const photos = [
+                'image1.jpg',
+                'image2.jpg',
+                'image3.jpg',
+                'image4.jpg',
+                'image5.jpg',
+                'image6.jpg'
+            ];
+            let currentPhoto = 0;
+
+            // Change photo every 3 seconds
+            setInterval(() => {
+                currentPhoto = (currentPhoto + 1) % photos.length;
+                couplePhoto.src = photos[currentPhoto];
+            }, 3000);
+
+            // Open surprise modal
+            heartBtn.addEventListener('click', function() {
+                surpriseModal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            });
+
+            // Close modal
+            closeModal.addEventListener('click', function() {
+                surpriseModal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            });
+
+            // Yes button
+            yesBtn.addEventListener('click', function() {
+                surpriseModal.classList.add('hidden');
+                finalMessage.classList.remove('hidden');
+            });
+
+            // No button - moves when clicked
+            noBtn.addEventListener('click', function() {
+                const x = Math.random() * (window.innerWidth - this.offsetWidth);
+                const y = Math.random() * (window.innerHeight - this.offsetHeight);
+                this.style.position = 'absolute';
+                this.style.left = x + 'px';
+                this.style.top = y + 'px';
+                this.style.transition = 'all 0.3s ease-out';
+                
+                // Also make the button bigger and red when clicked
+                this.style.transform = 'scale(1.2)';
+                this.style.backgroundColor = '#ff0000';
+                this.style.color = 'white';
+                
+                // Reset after 1 second
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                    this.style.backgroundColor = '';
+                    this.style.color = '';
+                }, 1000);
+            });
+
+            // Also move on mouseover (original behavior)
+            noBtn.addEventListener('mouseover', function() {
+                const x = Math.random() * (window.innerWidth - this.offsetWidth);
+                const y = Math.random() * (window.innerHeight - this.offsetHeight);
+                this.style.position = 'absolute';
+                this.style.left = x + 'px';
+                this.style.top = y + 'px';
+                this.style.transition = 'all 0.3s ease-out';
+            });
+
+            // Close final message
+            closeFinal.addEventListener('click', function() {
+                finalMessage.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            });
+
+            // Click outside to close modals
+            window.addEventListener('click', function(event) {
+                if (event.target === surpriseModal) {
+                    surpriseModal.classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                }
+                if (event.target === finalMessage) {
+                    finalMessage.classList.add('hidden');
+                    document.body.style.overflow = 'auto';
+                }
+            });
         });
+
+        // Confetti effect for yes button
+        function confetti() {
+            const colors = ['#ff0000', '#ff69b4', '#ff1493', '#ff00ff', '#ff6347'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'fixed';
+                confetti.style.width = '10px';
+                confetti.style.height = '10px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.borderRadius = '50%';
+                confetti.style.left = Math.random() * window.innerWidth + 'px';
+                confetti.style.top = '-10px';
+                confetti.style.zIndex = '9999';
+                confetti.style.transform = 'rotate(' + Math.random() * 360 + 'deg)';
+                
+                document.body.appendChild(confetti);
+                
+                const animation = confetti.animate([
+                    { top: '-10px', opacity: 1 },
+                    { top: window.innerHeight + 'px', opacity: 0 }
+                ], {
+                    duration: 2000 + Math.random() * 3000,
+                    easing: 'cubic-bezier(0.1, 0.8, 0.9, 1)'
+                });
+                
+                animation.onfinish = () => confetti.remove();
+            }
+        }
+
+        document.getElementById('yesBtn').addEventListener('click', confetti);
+
+        // Create falling hearts
+        function createFallingHearts() {
+            const container = document.querySelector('.absolute.top-0.left-0');
+            const colors = ['#ff69b4', '#ff1493', '#ff00ff', '#ff6347', '#ff0000'];
+            
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('i');
+                heart.className = 'fas fa-heart heart-fall';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = 5 + Math.random() * 10 + 's';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                heart.style.fontSize = 10 + Math.random() * 30 + 'px';
+                heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+                container.appendChild(heart);
+            }
+        }
+
+        // Start creating hearts when page loads
+        window.addEventListener('load', createFallingHearts);
     </script>
 </body>
-
 </html>
-
-
